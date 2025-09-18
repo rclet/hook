@@ -5,16 +5,16 @@ This comprehensive guide covers deployment processes for the Pipit Flutter appli
 ## 🌐 Environment Overview
 
 ### Production Environment
-- **Domain**: pipitgo.com
+- **Domain**: gopipit.com
 - **Path**: /pipit/
-- **Full URL**: https://pipitgo.com/pipit/
+- **Full URL**: https://gopipit.com/pipit/
 - **Directory**: public_html/pipit/
 - **Branch**: main
 
 ### Staging Environment  
-- **Domain**: staging.pipitgo.com
+- **Domain**: staging.gopipit.com
 - **Path**: / (root)
-- **Full URL**: https://staging.pipitgo.com/
+- **Full URL**: https://staging.gopipit.com/
 - **Directory**: public_html/staging/
 - **Branch**: develop
 
@@ -148,7 +148,7 @@ Require valid-user
 
 ### Namecheap DNS Settings
 
-#### For pipitgo.com (Production)
+#### For gopipit.com (Production)
 ```
 Type: A Record
 Host: @
@@ -157,25 +157,25 @@ TTL: Automatic
 
 Type: CNAME  
 Host: www
-Value: pipitgo.com
+Value: gopipit.com
 TTL: Automatic
 ```
 
-#### For staging.pipitgo.com (Staging)
+#### For staging.gopipit.com (Staging)
 ```
 Type: CNAME
 Host: staging
-Value: pipitgo.com
+Value: gopipit.com
 TTL: Automatic
 ```
 
 ### SSL Certificate Setup
 ```bash
 # Using Let's Encrypt (recommended)
-certbot --apache -d pipitgo.com -d www.pipitgo.com -d staging.pipitgo.com
+certbot --apache -d gopipit.com -d www.gopipit.com -d staging.gopipit.com
 
 # Verify SSL
-ssl-cert-check -c pipitgo.com
+ssl-cert-check -c gopipit.com
 ```
 
 ## 📊 Monitoring & Health Checks
@@ -185,11 +185,11 @@ The app includes basic health checks:
 
 ```bash
 # Production health check
-curl https://pipitgo.com/pipit/
+curl https://gopipit.com/pipit/
 # Should return 200 OK with Flutter app
 
 # Staging health check  
-curl https://staging.pipitgo.com/
+curl https://staging.gopipit.com/
 # Should return 200 OK with Flutter app
 ```
 
@@ -199,7 +199,7 @@ curl https://staging.pipitgo.com/
 npx lighthouse-ci autorun
 
 # Manual Lighthouse
-lighthouse https://pipitgo.com/pipit/ --output=html
+lighthouse https://gopipit.com/pipit/ --output=html
 ```
 
 ### Error Monitoring
@@ -308,7 +308,7 @@ dart analyze
 #### 4. SSL Issues
 ```bash
 # Test SSL
-openssl s_client -connect pipitgo.com:443
+openssl s_client -connect gopipit.com:443
 
 # Renew certificate
 certbot renew

@@ -6,13 +6,13 @@ This directory contains the web build output for deployment to production and st
 
 ```
 public_html/
-├── pipit/          # Production deployment (pipitgo.com)
+├── pipit/          # Production deployment (gopipit.com)
 │   ├── index.html
 │   ├── main.dart.js
 │   ├── flutter.js
 │   ├── manifest.json
 │   └── assets/
-└── staging/        # Staging deployment (staging.pipitgo.com)
+└── staging/        # Staging deployment (staging.gopipit.com)
     ├── index.html
     ├── main.dart.js
     ├── flutter.js
@@ -23,12 +23,12 @@ public_html/
 ## Production Deployment
 
 The production build is deployed to `public_html/pipit/` and accessible at:
-- https://pipitgo.com/pipit/
+- https://gopipit.com/pipit/
 
 ## Staging Deployment  
 
 The staging build is deployed to `public_html/staging/` and accessible at:
-- https://staging.pipitgo.com/
+- https://staging.gopipit.com/
 
 ## Deployment Process
 
@@ -50,12 +50,12 @@ The staging build is deployed to `public_html/staging/` and accessible at:
 
 ## Domain Configuration
 
-### Production (pipitgo.com)
+### Production (gopipit.com)
 - Document root: `/public_html/pipit/`
 - SSL certificate required
 - CDN configuration recommended
 
-### Staging (staging.pipitgo.com)
+### Staging (staging.gopipit.com)
 - Document root: `/public_html/staging/` 
 - Basic auth protection recommended
 - SSL certificate required
@@ -63,9 +63,9 @@ The staging build is deployed to `public_html/staging/` and accessible at:
 ## Deep Linking Support
 
 Both environments support deep linking:
-- `pipitgo.com/pipit/profile` → Profile page
-- `pipitgo.com/pipit/settings` → Settings page
-- `staging.pipitgo.com/profile` → Staging profile page
+- `gopipit.com/pipit/profile` → Profile page
+- `gopipit.com/pipit/settings` → Settings page
+- `staging.gopipit.com/profile` → Staging profile page
 
 ## Performance Optimizations
 
