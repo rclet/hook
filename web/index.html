@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!--
+    If you are serving your web app in a path other than the root, change the
+    href value below to reflect the base path you are serving from.
+
+    The path provided below has to start and end with a slash "/" in order for
+    it to work correctly.
+
+    For more details:
+    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+
+    This is a placeholder for base href that will be replaced by the value of
+    the `--base-href` argument provided to `flutter build`.
+  -->
+  <base href="$FLUTTER_BASE_HREF">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="Pipit - Nupuit Platform mobile-first Flutter app">
+  <meta name="keywords" content="pipit, nupuit, freelance, gigs, flutter">
+  <meta name="author" content="Nupuit Platform">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Pipit">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <!-- Open Graph meta tags -->
+  <meta property="og:title" content="Pipit - Nupuit Platform">
+  <meta property="og:description" content="Mobile-first Flutter app for freelance gigs">
+  <meta property="og:image" content="icons/Icon-512.png">
+  <meta property="og:url" content="https://pipitgo.com">
+  <meta property="og:type" content="website">
+
+  <!-- Twitter Card meta tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Pipit - Nupuit Platform">
+  <meta name="twitter:description" content="Mobile-first Flutter app for freelance gigs">
+  <meta name="twitter:image" content="icons/Icon-512.png">
+
+  <title>Pipit - Nupuit Platform</title>
+  <link rel="manifest" href="manifest.json">
+
+  <script>
+    // The value below is injected by flutter build, do not touch.
+    const serviceWorkerVersion = null;
+  </script>
+  <!-- This script adds the flutter initialization JS code -->
+  <script src="flutter.js" defer></script>
+
+  <!-- Deep linking support -->
+  <script>
+    // Handle deep linking for pipitgo.com
+    window.addEventListener('DOMContentLoaded', function() {
+      const path = window.location.pathname;
+      const search = window.location.search;
+      const hash = window.location.hash;
+      
+      // Store the initial route for Flutter to handle
+      window.initialRoute = path + search + hash;
+    });
+  </script>
+
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #2E7D8F 0%, #5FB3C6 100%);
+      font-family: 'SolaimanLipi', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    
+    .loading {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: white;
+    }
+    
+    .loading-logo {
+      width: 120px;
+      height: 120px;
+      background: white;
+      border-radius: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+    
+    .loading-text {
+      font-size: 32px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+    
+    .loading-subtitle {
+      font-size: 16px;
+      opacity: 0.8;
+      margin-bottom: 48px;
+    }
+    
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(255,255,255,0.3);
+      border-top: 3px solid white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    /* Hide loading screen when Flutter is ready */
+    .flutter-ready .loading {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Loading screen -->
+  <div class="loading" id="loading">
+    <div class="loading-logo">
+      <svg width="60" height="60" viewBox="0 0 24 24" fill="#2E7D8F">
+        <path d="M21,16V14L13,9V3.5A1.5,1.5 0 0,0 11.5,2A1.5,1.5 0 0,0 10,3.5V9L2,14V16L10,13.5V19L8,20.5V22L11.5,21L15,22V20.5L13,19V13.5L21,16Z" />
+      </svg>
+    </div>
+    <div class="loading-text">Pipit</div>
+    <div class="loading-subtitle">Nupuit Platform</div>
+    <div class="spinner"></div>
+  </div>
+
+  <script>
+    window.addEventListener('load', function(ev) {
+      // Download main.dart.js
+      _flutter.loader.loadEntrypoint({
+        serviceWorker: {
+          serviceWorkerVersion: serviceWorkerVersion,
+        },
+        onEntrypointLoaded: function(engineInitializer) {
+          engineInitializer.initializeEngine().then(function(appRunner) {
+            appRunner.runApp().then(function() {
+              // Hide loading screen when Flutter is ready
+              document.body.classList.add('flutter-ready');
+            });
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>

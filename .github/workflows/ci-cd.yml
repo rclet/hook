@@ -1,0 +1,196 @@
+name: Pipit CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  FLUTTER_VERSION: '3.19.0'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Test & Analyze
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: ${{ env.FLUTTER_VERSION }}
+        cache: true
+        
+    - name: Get dependencies
+      run: flutter pub get
+      
+    - name: Verify formatting
+      run: dart format --output=none --set-exit-if-changed .
+      
+    - name: Analyze project source
+      run: dart analyze --fatal-infos
+      
+    - name: Run tests
+      run: flutter test --coverage
+      
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: coverage/lcov.info
+
+  build-android:
+    needs: test
+    runs-on: ubuntu-latest
+    name: Build Android APK
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: ${{ env.FLUTTER_VERSION }}
+        cache: true
+        
+    - name: Setup Java
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'zulu'
+        java-version: '17'
+        
+    - name: Get dependencies
+      run: flutter pub get
+      
+    - name: Build APK
+      run: flutter build apk --release
+      
+    - name: Upload APK artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: android-apk
+        path: build/app/outputs/flutter-apk/app-release.apk
+
+  build-web:
+    needs: test
+    runs-on: ubuntu-latest
+    name: Build Web & Deploy
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: ${{ env.FLUTTER_VERSION }}
+        cache: true
+        
+    - name: Get dependencies
+      run: flutter pub get
+      
+    - name: Build web
+      run: flutter build web --release --base-href "/pipit/"
+      
+    - name: Upload web build artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: web-build
+        path: build/web/
+        
+    - name: Deploy to production (main branch)
+      if: github.ref == 'refs/heads/main'
+      run: |
+        echo "Deploying to production..."
+        # Copy build to public_html/pipit/
+        mkdir -p public_html/pipit
+        cp -r build/web/* public_html/pipit/
+        
+    - name: Deploy to staging (develop branch)
+      if: github.ref == 'refs/heads/develop'
+      run: |
+        echo "Deploying to staging..."
+        # Copy build to staging directory
+        mkdir -p public_html/staging
+        cp -r build/web/* public_html/staging/
+        
+    - name: Upload deployment artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: deployment-files
+        path: public_html/
+
+  security-scan:
+    needs: test
+    runs-on: ubuntu-latest
+    name: Security Scan
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'fs'
+        scan-ref: '.'
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+        
+    - name: Upload Trivy scan results to GitHub Security tab
+      uses: github/codeql-action/upload-sarif@v2
+      if: always()
+      with:
+        sarif_file: 'trivy-results.sarif'
+
+  lighthouse:
+    needs: build-web
+    runs-on: ubuntu-latest
+    name: Lighthouse Performance Test
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Download web build
+      uses: actions/download-artifact@v3
+      with:
+        name: web-build
+        path: build/web/
+        
+    - name: Serve web app
+      run: |
+        npx http-server build/web -p 8080 &
+        sleep 5
+        
+    - name: Run Lighthouse
+      uses: treosh/lighthouse-ci-action@v10
+      with:
+        urls: |
+          http://localhost:8080
+        uploadArtifacts: true
+        temporaryPublicStorage: true
+
+  notify:
+    needs: [test, build-android, build-web, security-scan]
+    runs-on: ubuntu-latest
+    name: Notify
+    if: always()
+    
+    steps:
+    - name: Notify on success
+      if: ${{ needs.test.result == 'success' && needs.build-android.result == 'success' && needs.build-web.result == 'success' }}
+      run: |
+        echo "✅ Pipit CI/CD Pipeline completed successfully!"
+        echo "✅ Tests passed"
+        echo "✅ Android APK built"
+        echo "✅ Web build deployed"
+        
+    - name: Notify on failure
+      if: ${{ needs.test.result == 'failure' || needs.build-android.result == 'failure' || needs.build-web.result == 'failure' }}
+      run: |
+        echo "❌ Pipit CI/CD Pipeline failed!"
+        echo "❌ Check the logs above for details"
