@@ -1,0 +1,23 @@
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    # Specify additional rules here
+    prefer_single_quotes: true
+    prefer_const_constructors: true
+    prefer_const_literals_to_create_immutables: true
+    prefer_const_declarations: true
+    prefer_const_constructors_in_immutables: true
+    avoid_unnecessary_containers: true
+    avoid_web_libraries_in_flutter: true
+    prefer_relative_imports: true
+    sort_pub_dependencies: true
+    use_super_parameters: true
+    require_trailing_commas: true
+
+analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+  errors:
+    invalid_annotation_target: ignore

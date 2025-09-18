@@ -1,0 +1,39 @@
+name: pipit
+description: Pipit mobile-first Flutter app for Nupuit using Rclet API
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  go_router: ^14.2.7
+  flutter_screenutil: ^5.9.3
+  http: ^1.1.0
+  shared_preferences: ^2.2.2
+  provider: ^6.1.1
+  json_annotation: ^4.8.1
+  cupertino_icons: ^1.0.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  json_serializable: ^6.7.1
+  build_runner: ^2.4.7
+
+flutter:
+  uses-material-design: true
+  
+  assets:
+    - assets/pipit/images/
+    - assets/pipit/icons/
+  
+  fonts:
+    - family: SolaimanLipi
+      fonts:
+        - asset: assets/pipit/fonts/SolaimanLipi.ttf
+        - asset: assets/pipit/fonts/SolaimanLipi-Bold.ttf
+          weight: 700
