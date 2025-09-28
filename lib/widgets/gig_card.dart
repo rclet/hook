@@ -13,144 +13,176 @@ class GigCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+      margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(16.r),
+        borderRadius: BorderRadius.circular(20.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.08),
-            blurRadius: 12,
+            color: Colors.black.withOpacity(0.06),
+            blurRadius: 16,
             offset: const Offset(0, 4),
+            spreadRadius: 0,
+          ),
+          BoxShadow(
+            color: Colors.black.withOpacity(0.02),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+            spreadRadius: 0,
           ),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Gig Image
-          ClipRRect(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(16.r),
-              topRight: Radius.circular(16.r),
-            ),
-            child: Container(
-              height: 180.h,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    Theme.of(context).colorScheme.primary.withOpacity(0.8),
-                    Theme.of(context).colorScheme.secondary.withOpacity(0.8),
-                  ],
-                ),
-              ),
-              child: gig.images.isNotEmpty
-                  ? Image.network(
-                      gig.images.first,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return _buildPlaceholderImage(context);
-                      },
-                    )
-                  : _buildPlaceholderImage(context),
-            ),
-          ),
-
-          // Gig Content
-          Padding(
-            padding: EdgeInsets.all(16.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20.r),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Enhanced Gig Image with better proportions
+            Stack(
               children: [
-                // Title
-                Text(
-                  gig.title,
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                
-                SizedBox(height: 8.h),
-                
-                // Description
-                Text(
-                  gig.description,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
-                  ),
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                
-                SizedBox(height: 12.h),
-                
-                // Category Badge
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                  height: 200.h,
+                  width: double.infinity,
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(20.r),
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Theme.of(context).colorScheme.primary.withOpacity(0.8),
+                        Theme.of(context).colorScheme.secondary.withOpacity(0.8),
+                      ],
+                    ),
                   ),
-                  child: Text(
-                    gig.category,
-                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: Theme.of(context).colorScheme.primary,
-                      fontWeight: FontWeight.w500,
+                  child: gig.images.isNotEmpty
+                      ? Image.network(
+                          gig.images.first,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return _buildPlaceholderImage(context);
+                          },
+                        )
+                      : _buildPlaceholderImage(context),
+                ),
+                
+                // Category badge overlay
+                Positioned(
+                  top: 12.h,
+                  right: 12.w,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.95),
+                      borderRadius: BorderRadius.circular(16.r),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 8,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Text(
+                      gig.category,
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: Theme.of(context).colorScheme.primary,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 11.sp,
+                      ),
                     ),
                   ),
                 ),
-                
-                SizedBox(height: 16.h),
-                
-                // Seller Info and Price
-                Row(
-                  children: [
-                    // Seller Avatar
-                    CircleAvatar(
-                      radius: 20.r,
-                      backgroundColor: Theme.of(context).colorScheme.primary,
-                      backgroundImage: gig.seller.avatar != null
-                          ? NetworkImage(gig.seller.avatar!)
-                          : null,
-                      child: gig.seller.avatar == null
-                          ? Icon(
-                              Icons.person,
-                              size: 20.sp,
-                              color: Colors.white,
-                            )
-                          : null,
+              ],
+            ),
+
+            // Enhanced Gig Content with better spacing
+            Padding(
+              padding: EdgeInsets.all(20.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Enhanced Title with better typography
+                  Text(
+                    gig.title,
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.w700,
+                      height: 1.3,
                     ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  
+                  SizedBox(height: 8.h),
+                  
+                  // Enhanced Description
+                  Text(
+                    gig.description,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurface.withOpacity(0.75),
+                      height: 1.4,
+                    ),
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  
+                  SizedBox(height: 16.h),
+                  
+                  // Enhanced Seller Info and Price with better layout
+                  Row(
+                    children: [
+                      // Enhanced Seller Avatar
+                      Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
+                            width: 2,
+                          ),
+                        ),
+                        child: CircleAvatar(
+                          radius: 18.r,
+                          backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                          backgroundImage: gig.seller.avatar != null
+                              ? NetworkImage(gig.seller.avatar!) as ImageProvider
+                              : null,
+                          child: gig.seller.avatar == null
+                              ? Icon(
+                                  Icons.person,
+                                  size: 20.sp,
+                                  color: Theme.of(context).colorScheme.primary,
+                                )
+                              : null,
+                        ),
+                      ),
                     
                     SizedBox(width: 12.w),
                     
-                    // Seller Name
+                    // Enhanced Seller Info
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             gig.seller.name,
-                            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                              fontWeight: FontWeight.w500,
+                            style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                              fontWeight: FontWeight.w600,
                             ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                           SizedBox(height: 2.h),
                           Row(
                             children: [
                               Icon(
-                                Icons.star,
+                                Icons.star_rounded,
                                 size: 14.sp,
                                 color: Colors.amber,
                               ),
                               SizedBox(width: 4.w),
                               Text(
                                 '4.8',
-                                style: Theme.of(context).textTheme.bodySmall,
+                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
                             ],
                           ),
@@ -158,7 +190,7 @@ class GigCard extends StatelessWidget {
                       ),
                     ),
                     
-                    // Price
+                    // Enhanced Price Display
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
@@ -166,13 +198,16 @@ class GigCard extends StatelessWidget {
                           'Starting at',
                           style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                            fontSize: 11.sp,
                           ),
                         ),
+                        SizedBox(height: 2.h),
                         Text(
                           '\$${gig.price.toStringAsFixed(0)}',
                           style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w700,
                             color: Theme.of(context).colorScheme.primary,
+                            fontSize: 18.sp,
                           ),
                         ),
                       ],
@@ -180,28 +215,26 @@ class GigCard extends StatelessWidget {
                   ],
                 ),
                 
-                SizedBox(height: 16.h),
+                SizedBox(height: 20.h),
                 
-                // Action Buttons
+                // Enhanced Action Buttons
                 Row(
                   children: [
                     Expanded(
-                      child: OutlinedButton(
+                      flex: 2,
+                      child: OutlinedButton.icon(
                         onPressed: () {
                           // Handle contact seller
                         },
-                        style: OutlinedButton.styleFrom(
-                          side: BorderSide(
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.r),
-                          ),
+                        icon: Icon(
+                          Icons.chat_outlined,
+                          size: 16.sp,
                         ),
-                        child: Text(
-                          'Contact',
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.primary,
+                        label: const Text('Contact'),
+                        style: OutlinedButton.styleFrom(
+                          padding: EdgeInsets.symmetric(vertical: 14.h),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.r),
                           ),
                         ),
                       ),
@@ -210,19 +243,21 @@ class GigCard extends StatelessWidget {
                     SizedBox(width: 12.w),
                     
                     Expanded(
-                      child: ElevatedButton(
+                      flex: 3,
+                      child: ElevatedButton.icon(
                         onPressed: () {
                           // Handle order now
                         },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Theme.of(context).colorScheme.primary,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.r),
-                          ),
+                        icon: Icon(
+                          Icons.shopping_cart_outlined,
+                          size: 16.sp,
                         ),
-                        child: const Text(
-                          'Order Now',
-                          style: TextStyle(color: Colors.white),
+                        label: const Text('Order Now'),
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.symmetric(vertical: 14.h),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.r),
+                          ),
                         ),
                       ),
                     ),
@@ -245,15 +280,28 @@ class GigCard extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            Theme.of(context).colorScheme.primary.withOpacity(0.3),
-            Theme.of(context).colorScheme.secondary.withOpacity(0.3),
+            Theme.of(context).colorScheme.primary.withOpacity(0.4),
+            Theme.of(context).colorScheme.secondary.withOpacity(0.4),
           ],
         ),
       ),
-      child: Icon(
-        Icons.image,
-        size: 48.sp,
-        color: Colors.white.withOpacity(0.7),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.image_outlined,
+            size: 48.sp,
+            color: Colors.white.withOpacity(0.8),
+          ),
+          SizedBox(height: 8.h),
+          Text(
+            'No Image',
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: Colors.white.withOpacity(0.8),
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
       ),
     );
   }
