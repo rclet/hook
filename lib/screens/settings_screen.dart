@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
@@ -285,6 +286,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     title: 'API Settings',
                     subtitle: 'Configure API endpoints',
                     onTap: () {},
+                  ),
+                  _buildSettingsItem(
+                    icon: Icons.mobile_friendly_rounded,
+                    title: 'Share Debug APK',
+                    subtitle: 'Download and share debug version',
+                    onTap: () {
+                      _showDebugAPKDialog(context);
+                    },
                   ),
                 ],
                 
@@ -633,6 +642,271 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ],
         ),
       ],
+    );
+  }
+
+  void _showDebugAPKDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16.r),
+          ),
+          title: Row(
+            children: [
+              Icon(
+                Icons.mobile_friendly_rounded,
+                color: Theme.of(context).colorScheme.primary,
+                size: 24.sp,
+              ),
+              SizedBox(width: 12.w),
+              const Text('Debug APK'),
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Debug APKs are available for testing and development purposes. These builds include debug information and additional logging.',
+              ),
+              SizedBox(height: 16.h),
+              Container(
+                padding: EdgeInsets.all(12.w),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(8.r),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.info_outline_rounded,
+                          size: 16.sp,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        SizedBox(width: 8.w),
+                        Text(
+                          'Available Builds:',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 8.h),
+                    Text('• Development (dev) - Latest features'),
+                    Text('• Staging - Pre-release testing'),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                _copyDebugAPKInfo();
+                Navigator.of(context).pop();
+              },
+              child: const Text('Copy Info'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                _openDebugAPKDownload();
+                Navigator.of(context).pop();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.primary,
+              ),
+              child: const Text('Download'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _copyDebugAPKInfo() {
+    const debugInfo = '''Debug APK Information:
+    
+Repository: rclet/hook
+Access: GitHub Actions Artifacts
+
+To download debug APKs:
+1. Visit: https://github.com/rclet/hook/actions
+2. Click on the latest workflow run
+3. Download "android-debug-apks" artifact
+4. Extract and install the APK
+
+Development Build: app-dev-debug.apk
+Staging Build: app-staging-debug.apk
+
+Package Names:
+- Dev: com.nupuit.pipit.dev  
+- Staging: com.nupuit.pipit.staging
+
+Note: Debug builds include additional logging and are for testing only.''';
+
+    Clipboard.setData(const ClipboardData(text: debugInfo));
+    
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text('Debug APK information copied to clipboard'),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.r),
+        ),
+      ),
+    );
+  }
+
+  void _openDebugAPKDownload() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text('Opening GitHub Actions for APK download...'),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        behavior: SnackBarBehavior.floating,
+        action: SnackBarAction(
+          label: 'Open',
+          textColor: Colors.white,
+          onPressed: () {
+            // In a real implementation, this would open a browser or in-app browser
+            // For now, we'll just show instructions
+            _showDownloadInstructions();
+          },
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.r),
+        ),
+      ),
+    );
+  }
+
+  void _showDownloadInstructions() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16.r),
+          ),
+          title: Row(
+            children: [
+              Icon(
+                Icons.download_rounded,
+                color: Theme.of(context).colorScheme.primary,
+                size: 24.sp,
+              ),
+              SizedBox(width: 12.w),
+              const Text('Download Instructions'),
+            ],
+          ),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'To download debug APKs:',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
+                SizedBox(height: 12.h),
+                _buildInstructionStep('1', 'Visit GitHub repository'),
+                _buildInstructionStep('2', 'Go to Actions tab'),
+                _buildInstructionStep('3', 'Select latest workflow run'),
+                _buildInstructionStep('4', 'Download "android-debug-apks"'),
+                _buildInstructionStep('5', 'Extract and install APK'),
+                SizedBox(height: 16.h),
+                Container(
+                  padding: EdgeInsets.all(12.w),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.3),
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.link_rounded,
+                            size: 16.sp,
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                          SizedBox(width: 8.w),
+                          Text(
+                            'Repository:',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 4.h),
+                      const Text('github.com/rclet/hook'),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Got it'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildInstructionStep(String step, String instruction) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 8.h),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 24.w,
+            height: 24.h,
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.primary,
+              shape: BoxShape.circle,
+            ),
+            child: Center(
+              child: Text(
+                step,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ),
+          SizedBox(width: 12.w),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.only(top: 2.h),
+              child: Text(instruction),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

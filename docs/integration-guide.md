@@ -286,6 +286,8 @@ flutter build apk --debug --flavor dev
 ```bash
 # Set environment to staging in main.dart first
 flutter build apk --release --flavor staging
+# Or for debug build:
+flutter build apk --debug --flavor staging
 ```
 
 ### Production Build
@@ -293,6 +295,24 @@ flutter build apk --release --flavor staging
 # Set environment to prod in main.dart first
 flutter build apk --release --flavor prod
 ```
+
+### Debug APK Sharing
+Debug APKs are automatically built by the CI/CD pipeline and can be accessed through:
+
+1. **GitHub Actions Artifacts**: Available after each workflow run
+   - Visit: `https://github.com/rclet/hook/actions`
+   - Download `android-debug-apks` artifact
+   - Contains: `app-dev-debug.apk` and `app-staging-debug.apk`
+
+2. **In-App Sharing**: Available in the Settings screen
+   - Go to Settings → Developer Options → Share Debug APK
+   - Copy debug info or view download instructions
+   - Only visible in debug builds
+
+**Package Names:**
+- Development: `com.nupuit.pipit.dev`
+- Staging: `com.nupuit.pipit.staging` 
+- Production: `com.nupuit.pipit`
 
 ### Web Deployment
 ```bash

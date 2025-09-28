@@ -67,3 +67,7 @@ public_html/staging/*
 # Asset files that should be downloaded
 assets/pipit/fonts/*.ttf
 assets/pipit/fonts/*.otf
+
+# Local dev files
+flutter/
+*.tar.xz

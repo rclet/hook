@@ -44,7 +44,7 @@ jobs:
   build-android:
     needs: test
     runs-on: ubuntu-latest
-    name: Build Android APK
+    name: Build Android APKs
     
     steps:
     - name: Checkout code
@@ -65,14 +65,27 @@ jobs:
     - name: Get dependencies
       run: flutter pub get
       
-    - name: Build APK
-      run: flutter build apk --release
+    - name: Build Release APK
+      run: flutter build apk --release --flavor prod
       
-    - name: Upload APK artifact
+    - name: Build Debug APKs
+      run: |
+        flutter build apk --debug --flavor dev
+        flutter build apk --debug --flavor staging
+        
+    - name: Upload Release APK artifact
       uses: actions/upload-artifact@v3
       with:
-        name: android-apk
-        path: build/app/outputs/flutter-apk/app-release.apk
+        name: android-release-apk
+        path: build/app/outputs/flutter-apk/app-prod-release.apk
+        
+    - name: Upload Debug APK artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: android-debug-apks
+        path: |
+          build/app/outputs/flutter-apk/app-dev-debug.apk
+          build/app/outputs/flutter-apk/app-staging-debug.apk
 
   build-web:
     needs: test
