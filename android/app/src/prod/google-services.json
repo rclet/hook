@@ -1,0 +1,17 @@
+{
+  "project_info": {
+    "project_number": "123456789",
+    "project_id": "pipit-prod",
+    "storage_bucket": "pipit-prod.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:123456789:android:prod123", 
+        "android_client_info": {
+          "package_name": "com.nupuit.pipit"
+        }
+      }
+    }
+  ]
+}

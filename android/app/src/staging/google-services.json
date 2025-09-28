@@ -1,0 +1,17 @@
+{
+  "project_info": {
+    "project_number": "123456789",
+    "project_id": "pipit-staging", 
+    "storage_bucket": "pipit-staging.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:123456789:android:staging123",
+        "android_client_info": {
+          "package_name": "com.nupuit.pipit.staging"
+        }
+      }
+    }
+  ]
+}
