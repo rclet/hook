@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'auth_models.dart';
+import 'api_response.dart'; // Import existing Gig model
 
 part 'models.g.dart';
 
@@ -13,7 +14,7 @@ class Order {
   final double amount;
   final String? requirements;
   final String? notes;
-  final Gig? gig;
+  final UpdatedGig? gig;
   final AuthUser? user;
   final AuthUser? seller;
   @JsonKey(name: 'created_at')
