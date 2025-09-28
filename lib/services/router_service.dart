@@ -29,7 +29,7 @@ class RouterService {
         name: 'settings',
         builder: (context, state) => const SettingsScreen(),
       ),
-      // Deep linking routes for pipitgo.com
+      // Deep linking routes for gopipit.com
       GoRoute(
         path: '/pipit/:action',
         name: 'pipit_action',
@@ -46,13 +46,13 @@ class RouterService {
         },
       ),
     ],
-    // Handle deep links for pipitgo.com
+    // Handle deep links for gopipit.com
     redirect: (context, state) {
       final location = state.matchedLocation;
       
-      // Handle pipitgo.com deep linking
-      if (state.uri.host == 'pipitgo.com' || 
-          state.uri.host == 'staging.pipitgo.com') {
+      // Handle gopipit.com deep linking
+      if (state.uri.host == 'gopipit.com' || 
+          state.uri.host == 'staging.gopipit.com') {
         // Extract path and redirect appropriately
         final path = state.uri.path;
         if (path.startsWith('/pipit/')) {
