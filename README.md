@@ -85,7 +85,16 @@ lib/
 
 **Android APK:**
 ```bash
-flutter build apk --release
+flutter build apk --release --flavor prod
+```
+
+**Debug APKs:**
+```bash
+# Development build
+flutter build apk --debug --flavor dev
+
+# Staging build  
+flutter build apk --debug --flavor staging
 ```
 
 **Web Build:**
@@ -97,6 +106,15 @@ flutter build web --release --base-href "/pipit/"
 ```bash
 flutter build ios --release
 ```
+
+### Debug APK Sharing
+
+Debug APKs are automatically built and can be shared easily:
+
+1. **Automated Builds**: Every push to `main` or `develop` branches builds debug APKs
+2. **GitHub Actions**: Download `android-debug-apks` artifact from workflow runs
+3. **In-App Access**: Use Settings → Developer Options → Share Debug APK
+4. **Multiple Flavors**: Separate debug builds for development and staging environments
 
 ## 🌐 Deployment
 
