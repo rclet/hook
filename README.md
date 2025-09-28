@@ -16,7 +16,7 @@ Pipit is a mobile-first Flutter application for the Nupuit freelance platform, i
 - **🔔 Push Notifications**: Real-time notifications for orders and messages
 - **🌐 Multi-Environment**: Separate dev, staging, and production configurations
 - **🔒 Secure Storage**: Encrypted storage for authentication tokens and sensitive data
-- **📚 Deep Linking**: Supports `pipitgo.com` deep linking for enhanced user experience
+- **📚 Deep Linking**: Supports `gopipit.com` deep linking for enhanced user experience
 - **⚡ Progressive Web App**: Web build optimized for deployment
 - **🌍 Multi-language Ready**: Architecture supports internationalization
 - **🚀 CI/CD Pipeline**: Automated testing, building, and deployment
@@ -134,7 +134,7 @@ flutter build ios --release
 
 ## 🌐 Deployment
 
-### Production Deployment (pipitgo.com)
+### Production Deployment (gopipit.com)
 
 1. **Automated via CI/CD**:
    - Push to `main` branch triggers production deployment
@@ -146,7 +146,7 @@ flutter build ios --release
    cp -r build/web/* public_html/pipit/
    ```
 
-### Staging Deployment (staging.pipitgo.com)
+### Staging Deployment (staging.gopipit.com)
 
 1. **Automated via CI/CD**:
    - Push to `develop` branch triggers staging deployment
@@ -162,10 +162,10 @@ flutter build ios --release
 
 The app supports deep linking for enhanced user experience:
 
-- `pipitgo.com/pipit/profile` → User profile
-- `pipitgo.com/pipit/settings` → App settings  
-- `staging.pipitgo.com/profile` → Staging profile
-- `staging.pipitgo.com/settings` → Staging settings
+- `gopipit.com/pipit/profile` → User profile
+- `gopipit.com/pipit/settings` → App settings  
+- `staging.gopipit.com/profile` → Staging profile
+- `staging.gopipit.com/settings` → Staging settings
 
 ## 🧪 Testing
 

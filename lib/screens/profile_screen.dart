@@ -165,10 +165,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profile'),
+        title: const Text('My Profile'),
+        centerTitle: true,
         leading: IconButton(
           onPressed: () => context.go('/home'),
-          icon: const Icon(Icons.arrow_back),
+          icon: Container(
+            padding: EdgeInsets.all(4.w),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+            child: const Icon(Icons.arrow_back_rounded),
+          ),
         ),
         actions: [
           if (!isEditMode && currentUser != null)
@@ -297,9 +305,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     ),
                                 ],
                               ),
-                              
                               SizedBox(height: 16.h),
-                              
                               // Name (editable in edit mode)
                               if (isEditMode)
                                 TextFormField(
@@ -316,9 +322,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   currentUser?.name ?? 'Unknown User',
                                   style: Theme.of(context).textTheme.headlineMedium,
                                 ),
-                              
                               SizedBox(height: 8.h),
-                              
                               // Email
                               Text(
                                 currentUser?.email ?? '',
@@ -326,7 +330,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
                                 ),
                               ),
-                              
                               // Phone (editable in edit mode)
                               if (isEditMode) ...[
                                 SizedBox(height: 16.h),
@@ -348,7 +351,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                 ),
                               ],
-                              
                               if (!isEditMode) ...[
                                 SizedBox(height: 16.h),
                                 Row(
@@ -363,10 +365,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ],
                           ),
                         ),
-                        
                         if (!isEditMode) ...[
                           SizedBox(height: 24.h),
-                          
                           // Quick Actions
                           Row(
                             children: [
@@ -395,9 +395,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                             ],
                           ),
-                          
                           SizedBox(height: 24.h),
-                          
                           // Profile Options
                           _buildProfileOption(
                             context,
@@ -448,9 +446,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             subtitle: 'App preferences and account settings',
                             onTap: () => context.go('/settings'),
                           ),
-                          
                           SizedBox(height: 32.h),
-                          
                           // Logout Button
                           SizedBox(
                             width: double.infinity,
@@ -472,7 +468,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                           ),
                         ],
-                        
                         SizedBox(height: 32.h),
                       ],
                     ),
@@ -487,14 +482,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Text(
           value,
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: Theme.of(context).colorScheme.primary,
+            fontWeight: FontWeight.w700,
+            color: Colors.white,
           ),
         ),
         SizedBox(height: 4.h),
         Text(
           label,
-          style: Theme.of(context).textTheme.bodySmall,
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            color: Colors.white.withOpacity(0.9),
+            fontWeight: FontWeight.w500,
+          ),
         ),
       ],
     );

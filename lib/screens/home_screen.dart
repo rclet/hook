@@ -181,11 +181,33 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Pipit'),
+        title: Row(
+          children: [
+            Icon(
+              Icons.flight_takeoff_rounded,
+              size: 28.sp,
+              color: Colors.white,
+            ),
+            SizedBox(width: 8.w),
+            const Text('Pipit'),
+          ],
+        ),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        elevation: 0,
         actions: [
-          IconButton(
-            onPressed: () => context.go('/profile'),
-            icon: const Icon(Icons.person),
+          Container(
+            margin: EdgeInsets.only(right: 8.w),
+            child: IconButton(
+              onPressed: () => context.go('/profile'),
+              icon: Container(
+                padding: EdgeInsets.all(4.w),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8.r),
+                ),
+                child: const Icon(Icons.person_rounded),
+              ),
+            ),
           ),
           PopupMenuButton<String>(
             onSelected: (value) {
@@ -235,10 +257,10 @@ class _HomeScreenState extends State<HomeScreen> {
         onRefresh: _loadInitialData,
         child: CustomScrollView(
           slivers: [
-            // Hero Section
+            // Enhanced Hero Section
             SliverToBoxAdapter(
               child: Container(
-                padding: EdgeInsets.all(16.w),
+                margin: EdgeInsets.only(bottom: 20.h),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
@@ -250,72 +272,102 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Welcome message
-                    if (currentUser != null) ...[
-                      Text(
-                        'Welcome back, ${currentUser!.name.split(' ').first}!',
-                        style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(height: 8.h),
-                      Text(
-                        'Discover amazing gigs from talented freelancers',
-                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: Colors.white.withOpacity(0.9),
-                        ),
-                      ),
-                    ] else ...[
-                      Text(
-                        'Welcome to Pipit',
-                        style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(height: 8.h),
-                      Text(
-                        'Discover amazing gigs from talented freelancers',
-                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: Colors.white.withOpacity(0.9),
-                        ),
-                      ),
-                    ],
-                    SizedBox(height: 16.h),
-                    
-                    // Search bar
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                      child: TextField(
-                        controller: _searchController,
-                        decoration: InputDecoration(
-                          hintText: 'Search for gigs...',
-                          prefixIcon: const Icon(Icons.search),
-                          suffixIcon: _searchController.text.isNotEmpty
-                              ? IconButton(
-                                  icon: const Icon(Icons.clear),
-                                  onPressed: () {
-                                    _searchController.clear();
-                                    _loadInitialData();
-                                  },
-                                )
-                              : null,
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(
-                            horizontal: 16.w,
-                            vertical: 12.h,
+                    Padding(
+                      padding: EdgeInsets.all(24.w),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 16.h),
+                          if (currentUser != null) ...[
+                            Text(
+                              'Welcome back, ${currentUser!.name.split(' ').first}!',
+                              style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ] else ...[
+                            Text(
+                              'Find Your Perfect\nFreelancer',
+                              style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                                height: 1.2,
+                              ),
+                            ),
+                          ],
+                          SizedBox(height: 12.h),
+                          Text(
+                            'Discover amazing gigs from talented professionals\nacross various categories',
+                            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              color: Colors.white.withOpacity(0.9),
+                              height: 1.4,
+                            ),
                           ),
+                          SizedBox(height: 24.h),
+                          
+                          // Enhanced Search Bar
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(16.r),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  blurRadius: 20,
+                                  offset: const Offset(0, 10),
+                                ),
+                              ],
+                            ),
+                            child: TextField(
+                              controller: _searchController,
+                              decoration: InputDecoration(
+                                hintText: 'What service are you looking for?',
+                                hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                  color: Colors.grey[600],
+                                ),
+                                prefixIcon: Container(
+                                  margin: EdgeInsets.all(12.w),
+                                  child: Icon(
+                                    Icons.search_rounded,
+                                    color: Theme.of(context).colorScheme.primary,
+                                    size: 24.sp,
+                                  ),
+                                ),
+                                suffixIcon: _searchController.text.isNotEmpty
+                                    ? IconButton(
+                                        icon: const Icon(Icons.clear),
+                                        onPressed: () {
+                                          _searchController.clear();
+                                          _loadInitialData();
+                                        },
+                                      )
+                                    : null,
+                                border: InputBorder.none,
+                                contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 20.w,
+                                  vertical: 18.h,
+                                ),
+                              ),
+                              onSubmitted: _searchGigs,
+                              onChanged: (value) {
+                                setState(() {});
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    // Curved bottom design
+                    Container(
+                      height: 24.h,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.background,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(24.r),
+                          topRight: Radius.circular(24.r),
                         ),
-                        onSubmitted: _searchGigs,
-                        onChanged: (value) {
-                          setState(() {}); // Rebuild to show/hide clear button
-                        },
                       ),
                     ),
                   ],

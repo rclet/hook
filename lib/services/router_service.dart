@@ -9,20 +9,16 @@ import '../services/auth_service.dart';
 
 class RouterService {
   static GoRouter? _router;
-  
   static GoRouter get router {
     _router ??= GoRouter(
       initialLocation: '/',
       debugLogDiagnostics: true,
       routes: [
-        // Splash screen
         GoRoute(
           path: '/',
           name: 'splash',
           builder: (context, state) => const SplashScreen(),
         ),
-        
-        // Authentication routes
         GoRoute(
           path: '/login',
           name: 'login',
@@ -33,8 +29,6 @@ class RouterService {
           name: 'register',
           builder: (context, state) => const RegisterScreen(),
         ),
-        
-        // Protected routes
         GoRoute(
           path: '/home',
           name: 'home',
@@ -50,8 +44,7 @@ class RouterService {
           name: 'settings',
           builder: (context, state) => const SettingsScreen(),
         ),
-        
-        // Deep linking routes for pipitgo.com
+        // Deep linking routes for gopipit.com
         GoRoute(
           path: '/pipit/:action',
           name: 'pipit_action',
@@ -68,50 +61,27 @@ class RouterService {
           },
         ),
       ],
-      
       // Handle deep links and authentication redirects
       redirect: (context, state) async {
         final location = state.matchedLocation;
-        
-        // Handle pipitgo.com deep linking
-        if (state.uri.host == 'pipitgo.com' || 
-            state.uri.host == 'staging.pipitgo.com') {
+        // Handle gopipit.com deep linking
+        if (state.uri.host == 'gopipit.com' || 
+            state.uri.host == 'staging.gopipit.com') {
           final path = state.uri.path;
           if (path.startsWith('/pipit/')) {
             return path;
           }
         }
-        
-        // Check authentication status for protected routes
-        final protectedRoutes = ['/home', '/profile', '/settings'];
-        final authRoutes = ['/login', '/register'];
-        
         // Allow splash screen without authentication check
         if (location == '/') {
           return null;
         }
-        
-        // Try to get auth service, but handle gracefully if not available
-        try {
-          // Note: We can't easily access the auth service here without context
-          // The splash screen will handle the authentication check
-          
-          // If trying to access auth routes and already authenticated, redirect to home
-          // This will be handled by individual screens
-          
-          // For now, allow all navigation - authentication will be checked in splash
-          return null;
-        } catch (e) {
-          // If we can't check auth status, allow navigation
-          return null;
-        }
+        // For now, allow all navigation - authentication will be checked in splash
+        return null;
       },
     );
-    
     return _router!;
   }
-  
-  // Clear router instance (useful for testing)
   static void clearRouter() {
     _router = null;
   }
