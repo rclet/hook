@@ -324,6 +324,45 @@ class AuthService {
     }
   }
 
+  // Check if current user is admin
+  Future<bool> isAdmin() async {
+    try {
+      final user = await getCurrentUser();
+      return user?.isAdmin ?? false;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  // Verify user role from backend
+  Future<ApiResponse<AuthUser>> verifyAuth() async {
+    try {
+      final response = await _apiService.get<AuthResponse>(
+        '/auth/me',
+        fromJson: (json) => AuthResponse.fromJson(json),
+      );
+
+      if (response.isSuccess && response.data != null) {
+        final authResponse = response.data!;
+        
+        if (authResponse.success && authResponse.user != null) {
+          // Update stored user data with latest from server
+          await _storeUserData(authResponse.user!);
+          
+          return ApiResponse.success(authResponse.user!, authResponse.message);
+        } else {
+          return ApiResponse.error(
+            authResponse.message ?? 'Failed to verify authentication'
+          );
+        }
+      } else {
+        return ApiResponse.error(response.error ?? 'Failed to verify authentication');
+      }
+    } catch (e) {
+      return ApiResponse.error('Failed to verify authentication: $e');
+    }
+  }
+
   // Get Firebase error message
   String _getFirebaseErrorMessage(firebase.FirebaseAuthException e) {
     switch (e.code) {

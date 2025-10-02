@@ -76,6 +76,7 @@ class AuthUser {
   final String? emailVerifiedAt;
   final String? phone;
   final String? avatar;
+  final String? role;
   @JsonKey(name: 'created_at')
   final String createdAt;
   @JsonKey(name: 'updated_at')
@@ -88,6 +89,7 @@ class AuthUser {
     this.emailVerifiedAt,
     this.phone,
     this.avatar,
+    this.role,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -96,6 +98,8 @@ class AuthUser {
       _$AuthUserFromJson(json);
 
   Map<String, dynamic> toJson() => _$AuthUserToJson(this);
+  
+  bool get isAdmin => role?.toLowerCase() == 'admin';
 }
 
 @JsonSerializable()

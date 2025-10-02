@@ -63,6 +63,7 @@ AuthUser _$AuthUserFromJson(Map<String, dynamic> json) => AuthUser(
       emailVerifiedAt: json['email_verified_at'] as String?,
       phone: json['phone'] as String?,
       avatar: json['avatar'] as String?,
+      role: json['role'] as String?,
       createdAt: json['created_at'] as String,
       updatedAt: json['updated_at'] as String,
     );
@@ -74,6 +75,7 @@ Map<String, dynamic> _$AuthUserToJson(AuthUser instance) => <String, dynamic>{
       'email_verified_at': instance.emailVerifiedAt,
       'phone': instance.phone,
       'avatar': instance.avatar,
+      'role': instance.role,
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,
     };
