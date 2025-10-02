@@ -64,6 +64,12 @@ public_html/staging/*
 .env.production
 .env.staging
 
+# Node.js / Vue.js
+web/node_modules/
+web/dist/
+web/.vite/
+web/.cache/
+
 # Asset files that should be downloaded
 assets/pipit/fonts/*.ttf
 assets/pipit/fonts/*.otf
