@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../services/api_service.dart';
+import '../services/auth_service.dart';
 import '../models/api_response.dart';
 import '../widgets/gig_card.dart';
 
@@ -17,11 +18,25 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Gig> gigs = [];
   bool isLoading = true;
   String? error;
+  bool isAdmin = false;
 
   @override
   void initState() {
     super.initState();
     _loadGigs();
+    _checkAdminStatus();
+  }
+
+  Future<void> _checkAdminStatus() async {
+    try {
+      final authService = context.read<AuthService>();
+      final admin = await authService.isAdmin();
+      setState(() {
+        isAdmin = admin;
+      });
+    } catch (e) {
+      // Ignore error
+    }
   }
 
   Future<void> _loadGigs() async {
@@ -77,6 +92,21 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Theme.of(context).colorScheme.primary,
         elevation: 0,
         actions: [
+          if (isAdmin)
+            Container(
+              margin: EdgeInsets.only(right: 8.w),
+              child: IconButton(
+                onPressed: () => context.go('/admin'),
+                icon: Container(
+                  padding: EdgeInsets.all(4.w),
+                  decoration: BoxDecoration(
+                    color: Colors.amber.withOpacity(0.3),
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                  child: const Icon(Icons.admin_panel_settings_rounded),
+                ),
+              ),
+            ),
           Container(
             margin: EdgeInsets.only(right: 8.w),
             child: IconButton(
